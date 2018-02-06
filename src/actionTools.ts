@@ -5,20 +5,20 @@ export type TAction<D extends { } = { }> = {
   data : D,
 };
 
-export const autoCreatorFactory = <T>(types : T) => <D extends { [K in keyof T] : {} }>() => {
-  const creators = {} as { [K in keyof T] : (data : D[K]) => TAction<D[K]> };
+export const autoCreatorFactory = <AT>(actionTypes : AT) => <AD extends { [T in keyof AT] : AD[T] }>() => {
+  const creators = {} as { [T in keyof AT] : (data : AD[T]) => TAction<AD[T]> };
 
-  for (const type in types) {
+  for (const type in actionTypes) {
     creators[type] = (data) => ({ type, data });
   }
 
   return creators;
 };
 
-export const autoGuardFactory = <T>(types : T) => <D extends { [K in keyof T] : {} }>() => {
-  const guards = {} as { [K in keyof T] : (action : AnyAction) => action is TAction<D[K]> };
+export const autoGuardFactory = <AT>(actionTypes : AT) => <AD extends { [T in keyof AT] : AD[T] }>() => {
+  const guards = {} as { [T in keyof AT] : (action : AnyAction) => action is TAction<AD[T]> };
 
-  for (const type in types) {
+  for (const type in actionTypes) {
     guards[type] = (action) : action is TAction<{ }> => action.type === type;
   }
 
