@@ -1,4 +1,4 @@
-import { AnyAction } from 'redux';
+import { Action } from 'redux';
 
 export type TAction<D extends { } = { }> = {
   type : string,
@@ -16,7 +16,7 @@ export const autoCreatorFactory = <AT>(actionTypes : AT) => <AD extends { [T in 
 };
 
 export const autoGuardFactory = <AT>(actionTypes : AT) => <AD extends { [T in keyof AT] : AD[T] }>() => {
-  const guards = {} as { [T in keyof AT] : (action : AnyAction) => action is TAction<AD[T]> };
+  const guards = {} as { [T in keyof AT] : (action : Action) => action is TAction<AD[T]> };
 
   for (const type in actionTypes) {
     guards[type] = (action) : action is TAction<{ }> => action.type === type;
