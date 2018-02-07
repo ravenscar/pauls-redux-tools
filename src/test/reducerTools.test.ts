@@ -17,7 +17,7 @@ const autoCreators = autoCreatorFactory(ActionTypes)<TActionDataShape>();
 const autoReducers = autoReducerFactory(ActionTypes)<TActionDataShape>();
 
 test('autoreducer will init state in action mode', () => {
-  let state : typeof autoReducers.Bar.exampleState;
+  let state : typeof autoReducers.Bar.actionDataType;
   const reducer = autoReducers.Bar.makeActionReducer({ 'id' : 123 });
 
   state = reducer(undefined, { type : '' }); // init state with blank action
@@ -26,7 +26,7 @@ test('autoreducer will init state in action mode', () => {
 });
 
 test('autoreducer processes relevant actions in action mode', () => {
-  let state : typeof autoReducers.Bar.exampleState;
+  let state : typeof autoReducers.Bar.actionDataType;
   const reducer = autoReducers.Bar.makeActionReducer({ id : 123 });
 
   state = reducer(undefined, { type : '' });
@@ -37,7 +37,7 @@ test('autoreducer processes relevant actions in action mode', () => {
 });
 
 test('autoreducer ignores irrelevant actions in action mode', () => {
-  let state : typeof autoReducers.Bar.exampleState;
+  let state : typeof autoReducers.Bar.actionDataType;
   const reducer = autoReducers.Bar.makeActionReducer({ id : 123 });
 
   state = reducer(undefined, { type : '' });
@@ -48,7 +48,7 @@ test('autoreducer ignores irrelevant actions in action mode', () => {
 });
 
 test('autoreducer will init state in property mode', () => {
-  let state : typeof autoReducers.Bar.exampleState.id;
+  let state : typeof autoReducers.Bar.actionDataType.id;
   const reducer = autoReducers.Bar.makePropertyReducer('id', 123);
 
   state = reducer(undefined, { type : '' }); // init state with blank action
@@ -57,7 +57,7 @@ test('autoreducer will init state in property mode', () => {
 });
 
 test('autoreducer processes relevant actions in action mode', () => {
-  let state : typeof autoReducers.Bar.exampleState.id;
+  let state : typeof autoReducers.Bar.actionDataType.id;
   const reducer = autoReducers.Bar.makePropertyReducer('id', 123);
 
   state = reducer(undefined, { type : '' }); // init state with blank action
@@ -68,7 +68,7 @@ test('autoreducer processes relevant actions in action mode', () => {
 });
 
 test('autoreducer ignores irrelevant actions in action mode', () => {
-  let state : typeof autoReducers.Bar.exampleState.id;
+  let state : typeof autoReducers.Bar.actionDataType.id;
   const reducer = autoReducers.Bar.makePropertyReducer('id', 123);
 
   state = reducer(undefined, { type : '' }); // init state with blank action
