@@ -10,7 +10,8 @@
     "actions",
     "selectors"
   ],
-  "main": "./dist/bundle.js",
+  "main": "./dist/index.js",
+  "types": "./dist/index.ts.d",
   "peerDependencies": {
     "redux": "^3.x"
   },
