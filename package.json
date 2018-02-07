@@ -12,7 +12,7 @@
   ],
   "license": "MIT",
   "main": "./dist/index.js",
-  "types": "./dist/index.ts.d",
+  "types": "./dist/index.d.ts",
   "peerDependencies": {
     "redux": "^3.x"
   },
