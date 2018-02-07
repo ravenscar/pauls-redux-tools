@@ -10,6 +10,7 @@
     "actions",
     "selectors"
   ],
+  "license": "MIT",
   "main": "./dist/index.js",
   "types": "./dist/index.ts.d",
   "peerDependencies": {
