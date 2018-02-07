@@ -33,8 +33,8 @@ type TActionDataShape = {
 const autoCreatorsStringEnum = autoCreatorFactory(ActionTypesStringEnum)<TActionDataShape>();
 const actionGuardsStringEnum = autoGuardFactory(ActionTypesStringEnum)<TActionDataShape>();
 
-const autoCreatorsEnum = autoCreatorFactory(ActionTypesStringEnum)<TActionDataShape>();
-const actionGuardsEnum = autoGuardFactory(ActionTypesStringEnum)<TActionDataShape>();
+const autoCreatorsEnum = autoCreatorFactory(ActionTypesEnum)<TActionDataShape>();
+const actionGuardsEnum = autoGuardFactory(ActionTypesEnum)<TActionDataShape>();
 
 const autoCreatorsPojo = autoCreatorFactory(actionTypesPojo)<TActionDataShape>();
 const actionGuardsPojo = autoGuardFactory(actionTypesPojo)<TActionDataShape>();
@@ -102,7 +102,7 @@ test('can override an autoCreator', () => {
 
   const actionCreators = { ...autoCreatorsEnum, ...overrides };
 
-  const { Foo, Bar, Baz } = createSomeActions(actionCreators);
+  const { Foo } = createSomeActions(actionCreators);
 
   expect(Foo.data).toEqual({ id : 'myPrefix:abc' });
 });
