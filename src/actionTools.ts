@@ -1,9 +1,12 @@
-import { Action } from 'redux';
+export { Action } from 'redux';
+import { Action, Dispatch } from 'redux';
 
 export type TAction<D extends { } = { }> = {
   type : string,
   data : D,
 };
+
+export type TGenericThunk<RS> = (dispatch : Dispatch<RS>, getState : () => RS) => void;
 
 export const autoCreatorFactory = <AT>(actionTypes : AT) => <AD extends { [T in keyof AT] : AD[T] }>() => {
   const creators = {} as { [T in keyof AT] : (data : AD[T]) => TAction<AD[T]> };
