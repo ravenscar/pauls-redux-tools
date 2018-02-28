@@ -49,7 +49,38 @@ test('autoreducer ignores irrelevant actions in action mode', () => {
   expect(state).toEqual({ id : 123 });
 });
 
-test('autoreducer will init state in partial action mode', () => {
+test('autoreducer will init state in action optional mode', () => {
+  let state : typeof autoReducers.Bar.actionDataType | undefined;
+  const reducer = autoReducers.Bar.makeActionOptionalReducer();
+
+  state = reducer(undefined, { type : '' }); // init state with blank action
+
+  expect(state).toBeUndefined();
+});
+
+test('autoreducer processes relevant actions in action optional mode', () => {
+  let state : typeof autoReducers.Bar.actionDataType | undefined;
+  const reducer = autoReducers.Bar.makeActionOptionalReducer();
+
+  state = reducer(undefined, { type : '' }); // init state with blank action
+
+  expect(state).toBeUndefined();
+  state = reducer(state, autoCreators.Bar({id : 1213}));
+  expect(state).toEqual({ id : 1213 });
+});
+
+test('autoreducer ignores irrelevant actions in action optional mode', () => {
+  let state : typeof autoReducers.Bar.actionDataType | undefined;
+  const reducer = autoReducers.Bar.makeActionOptionalReducer();
+
+  state = reducer(undefined, { type : '' }); // init state with blank action
+
+  expect(state).toBeUndefined();
+  state = reducer(state, autoCreators.Foo({id : '1213'}));
+  expect(state).toBeUndefined();
+});
+
+test('autoreducer will init state in action partial mode', () => {
   let state : Partial<typeof autoReducers.Bar.actionDataType>;
   const reducer = autoReducers.Bar.makeActionPartialReducer({});
 
@@ -58,7 +89,7 @@ test('autoreducer will init state in partial action mode', () => {
   expect(state).toEqual({ });
 });
 
-test('autoreducer processes relevant actions in partial action mode', () => {
+test('autoreducer processes relevant actions in action partial mode', () => {
   let state : Partial<typeof autoReducers.Bar.actionDataType>;
   const reducer = autoReducers.Bar.makeActionPartialReducer({});
 
@@ -69,7 +100,7 @@ test('autoreducer processes relevant actions in partial action mode', () => {
   expect(state).toEqual({ id : 1213 });
 });
 
-test('autoreducer ignores irrelevant actions in partial action mode', () => {
+test('autoreducer ignores irrelevant actions in action partial mode', () => {
   let state : Partial<typeof autoReducers.Bar.actionDataType>;
   const reducer = autoReducers.Bar.makeActionPartialReducer({});
 

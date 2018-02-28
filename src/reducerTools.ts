@@ -8,6 +8,7 @@ export const autoReducerFactory = <AT>(actionTypes : AT) => <AD extends { [T in 
   const reducers = {} as { [T in keyof AT] : {
     actionDataType : AD[T],
     makeActionReducer : (defaultState : AD[T]) => (state : AD[T] | undefined, action : Action) => AD[T],
+    makeActionOptionalReducer : () => (state : AD[T] | undefined, action : Action) => AD[T] | undefined,
     makeActionPartialReducer : (defaultState : Partial<AD[T]>) => (state : Partial<AD[T]> | undefined, action : Action) => Partial<AD[T]>,
     makePropertyReducer : <P extends keyof AD[T]>(property : P, defaultState : AD[T][P]) => (state : AD[T][P] | undefined, action : Action) => AD[T][P],
     makeOptionalPropertyReducer : <P extends keyof AD[T]>(property : P) => (state : AD[T][P] | undefined, action : Action) => AD[T][P] | undefined,
@@ -18,6 +19,7 @@ export const autoReducerFactory = <AT>(actionTypes : AT) => <AD extends { [T in 
     reducers[type] = {
       actionDataType: {},
       makeActionReducer: (defaultState) => (state, action) => guards[type](action) ? action.data : (state !== undefined) ? state : defaultState,
+      makeActionOptionalReducer: () => (state, action) => guards[type](action) ? action.data : state,
       makeActionPartialReducer: (defaultState) => (state, action) => guards[type](action) ? action.data : (state !== undefined) ? state : defaultState,
       makePropertyReducer: (field, defaultState) => (state, action) => guards[type](action) ? action.data[field] : (state !== undefined) ? state : defaultState,
       makeOptionalPropertyReducer: (field) => (state, action) => guards[type](action) ? action.data[field] : state,
