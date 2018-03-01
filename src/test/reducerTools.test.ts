@@ -6,6 +6,7 @@ enum ActionTypes {
   Bar,
   Baz,
   Tog,
+  Sub,
 }
 
 type TActionDataShape = {
@@ -13,23 +14,24 @@ type TActionDataShape = {
   Bar : { id : number };
   Baz : { first : boolean, second : number, third : string };
   Tog : { [index : string] : never};
+  Sub : { Prop : { id : string, count : number }}
 };
 
 const autoCreators = autoCreatorFactory(ActionTypes)<TActionDataShape>();
 const autoReducers = autoReducerFactory(ActionTypes)<TActionDataShape>();
 
-test('autoreducer will init state in action mode', () => {
-  let state : typeof autoReducers.Bar.actionDataType;
-  const reducer = autoReducers.Bar.makeActionReducer({ 'id' : 123 });
+test('autoreducer will init state in actionShaped mode', () => {
+  let state : TActionDataShape['Bar'];
+  const reducer = autoReducers.Bar.actionShaped({ 'id' : 123 });
 
   state = reducer(undefined, { type : '' }); // init state with blank action
 
   expect(state).toEqual({ 'id' : 123 });
 });
 
-test('autoreducer processes relevant actions in action mode', () => {
-  let state : typeof autoReducers.Bar.actionDataType;
-  const reducer = autoReducers.Bar.makeActionReducer({ id : 123 });
+test('autoreducer processes relevant actions in actionShaped mode', () => {
+  let state : TActionDataShape['Bar'];
+  const reducer = autoReducers.Bar.actionShaped({ id : 123 });
 
   state = reducer(undefined, { type : '' });
 
@@ -38,9 +40,9 @@ test('autoreducer processes relevant actions in action mode', () => {
   expect(state).toEqual({ id : 1213 });
 });
 
-test('autoreducer ignores irrelevant actions in action mode', () => {
-  let state : typeof autoReducers.Bar.actionDataType;
-  const reducer = autoReducers.Bar.makeActionReducer({ id : 123 });
+test('autoreducer ignores irrelevant actions in actionShaped mode', () => {
+  let state : TActionDataShape['Bar'];
+  const reducer = autoReducers.Bar.actionShaped({ id : 123 });
 
   state = reducer(undefined, { type : '' });
 
@@ -49,18 +51,18 @@ test('autoreducer ignores irrelevant actions in action mode', () => {
   expect(state).toEqual({ id : 123 });
 });
 
-test('autoreducer will init state in action optional mode', () => {
-  let state : typeof autoReducers.Bar.actionDataType | undefined;
-  const reducer = autoReducers.Bar.makeActionOptionalReducer();
+test('autoreducer will init state in actionShapedStartUndefined mode', () => {
+  let state : TActionDataShape['Bar'] | undefined;
+  const reducer = autoReducers.Bar.actionShapedStartUndefined();
 
   state = reducer(undefined, { type : '' }); // init state with blank action
 
   expect(state).toBeUndefined();
 });
 
-test('autoreducer processes relevant actions in action optional mode', () => {
-  let state : typeof autoReducers.Bar.actionDataType | undefined;
-  const reducer = autoReducers.Bar.makeActionOptionalReducer();
+test('autoreducer processes relevant actions in actionShapedStartUndefined mode', () => {
+  let state : TActionDataShape['Bar'] | undefined;
+  const reducer = autoReducers.Bar.actionShapedStartUndefined();
 
   state = reducer(undefined, { type : '' }); // init state with blank action
 
@@ -69,9 +71,9 @@ test('autoreducer processes relevant actions in action optional mode', () => {
   expect(state).toEqual({ id : 1213 });
 });
 
-test('autoreducer ignores irrelevant actions in action optional mode', () => {
-  let state : typeof autoReducers.Bar.actionDataType | undefined;
-  const reducer = autoReducers.Bar.makeActionOptionalReducer();
+test('autoreducer ignores irrelevant actions in actionShapedStartUndefined mode', () => {
+  let state : TActionDataShape['Bar'] | undefined;
+  const reducer = autoReducers.Bar.actionShapedStartUndefined();
 
   state = reducer(undefined, { type : '' }); // init state with blank action
 
@@ -80,18 +82,18 @@ test('autoreducer ignores irrelevant actions in action optional mode', () => {
   expect(state).toBeUndefined();
 });
 
-test('autoreducer will init state in action partial mode', () => {
-  let state : Partial<typeof autoReducers.Bar.actionDataType>;
-  const reducer = autoReducers.Bar.makeActionPartialReducer({});
+test('autoreducer will init state in partialActionShaped mode', () => {
+  let state : Partial<TActionDataShape['Bar']>;
+  const reducer = autoReducers.Bar.partialActionShaped({});
 
   state = reducer(undefined, { type : '' }); // init state with blank action
 
   expect(state).toEqual({ });
 });
 
-test('autoreducer processes relevant actions in action partial mode', () => {
-  let state : Partial<typeof autoReducers.Bar.actionDataType>;
-  const reducer = autoReducers.Bar.makeActionPartialReducer({});
+test('autoreducer processes relevant actions in partialActionShaped mode', () => {
+  let state : Partial<TActionDataShape['Bar']>;
+  const reducer = autoReducers.Bar.partialActionShaped({});
 
   state = reducer(undefined, { type : '' }); // init state with blank action
 
@@ -100,9 +102,9 @@ test('autoreducer processes relevant actions in action partial mode', () => {
   expect(state).toEqual({ id : 1213 });
 });
 
-test('autoreducer ignores irrelevant actions in action partial mode', () => {
-  let state : Partial<typeof autoReducers.Bar.actionDataType>;
-  const reducer = autoReducers.Bar.makeActionPartialReducer({});
+test('autoreducer ignores irrelevant actions in partialActionShaped mode', () => {
+  let state : Partial<TActionDataShape['Bar']>;
+  const reducer = autoReducers.Bar.partialActionShaped({});
 
   state = reducer(undefined, { type : '' }); // init state with blank action
 
@@ -111,18 +113,18 @@ test('autoreducer ignores irrelevant actions in action partial mode', () => {
   expect(state).toEqual({ });
 });
 
-test('autoreducer will init state in property mode', () => {
-  let state : typeof autoReducers.Bar.actionDataType.id;
-  const reducer = autoReducers.Bar.makePropertyReducer('id', 123);
+test('autoreducer will init state in actionPropertyShaped mode', () => {
+  let state : TActionDataShape['Bar']['id'];
+  const reducer = autoReducers.Bar.actionPropertyShaped('id', 123);
 
   state = reducer(undefined, { type : '' }); // init state with blank action
 
   expect(state).toEqual(123);
 });
 
-test('autoreducer processes relevant actions in property mode', () => {
-  let state : typeof autoReducers.Bar.actionDataType.id;
-  const reducer = autoReducers.Bar.makePropertyReducer('id', 123);
+test('autoreducer processes relevant actions in actionPropertyShaped mode', () => {
+  let state : TActionDataShape['Bar']['id'];
+  const reducer = autoReducers.Bar.actionPropertyShaped('id', 123);
 
   state = reducer(undefined, { type : '' }); // init state with blank action
 
@@ -131,9 +133,9 @@ test('autoreducer processes relevant actions in property mode', () => {
   expect(state).toEqual(1213);
 });
 
-test('autoreducer ignores irrelevant actions in property mode', () => {
-  let state : typeof autoReducers.Bar.actionDataType.id;
-  const reducer = autoReducers.Bar.makePropertyReducer('id', 123);
+test('autoreducer ignores irrelevant actions in actionPropertyShaped mode', () => {
+  let state : TActionDataShape['Bar']['id'];
+  const reducer = autoReducers.Bar.actionPropertyShaped('id', 123);
 
   state = reducer(undefined, { type : '' }); // init state with blank action
 
@@ -142,18 +144,49 @@ test('autoreducer ignores irrelevant actions in property mode', () => {
   expect(state).toEqual(123);
 });
 
-test('autoreducer will init undefined state in optional property mode', () => {
-  let state : typeof autoReducers.Bar.actionDataType.id | undefined;
-  const reducer = autoReducers.Bar.makeOptionalPropertyReducer('id');
+test('autoreducer will init state in partialActionPropertyShaped mode', () => {
+  let state : Partial<TActionDataShape['Sub']['Prop']>;
+  const reducer = autoReducers.Sub.partialActionPropertyShaped('Prop', { count: 3 });
+
+  state = reducer(undefined, { type : '' }); // init state with blank action
+
+  expect(state).toEqual({ count: 3 });
+});
+
+test('autoreducer processes relevant actions in partialActionPropertyShaped mode', () => {
+  let state : Partial<TActionDataShape['Sub']['Prop']>;
+  const reducer = autoReducers.Sub.partialActionPropertyShaped('Prop', { count: 3 });
+
+  state = reducer(undefined, { type : '' }); // init state with blank action
+
+  expect(state).toEqual({ count: 3 });
+  state = reducer(state, autoCreators.Sub( { Prop : { id : '2', count : 12 } }));
+  expect(state).toEqual({ id : '2', count : 12 });
+});
+
+test('autoreducer ignores irrelevant actions in partialActionPropertyShaped mode', () => {
+  let state : Partial<TActionDataShape['Sub']['Prop']>;
+  const reducer = autoReducers.Sub.partialActionPropertyShaped('Prop', { count: 3 });
+
+  state = reducer(undefined, { type : '' }); // init state with blank action
+
+  expect(state).toEqual({ count: 3 });
+  state = reducer(state, autoCreators.Bar({id : 1213}));
+  expect(state).toEqual({ count: 3 });
+});
+
+test('autoreducer will init undefined state in actionPropertyShapedStartUndefined mode', () => {
+  let state : TActionDataShape['Bar']['id'] | undefined;
+  const reducer = autoReducers.Bar.actionPropertyShapedStartUndefined('id');
 
   state = reducer(undefined, { type : '' }); // init state with blank action
 
   expect(state).toBeUndefined();
 });
 
-test('autoreducer processes relevant actions in optional property mode', () => {
-  let state : typeof autoReducers.Bar.actionDataType.id | undefined;
-  const reducer = autoReducers.Bar.makeOptionalPropertyReducer('id');
+test('autoreducer processes relevant actions in actionPropertyShapedStartUndefined mode', () => {
+  let state : TActionDataShape['Bar']['id'] | undefined;
+  const reducer = autoReducers.Bar.actionPropertyShapedStartUndefined('id');
 
   state = reducer(undefined, { type : '' }); // init state with blank action
 
@@ -162,9 +195,9 @@ test('autoreducer processes relevant actions in optional property mode', () => {
   expect(state).toEqual(1213);
 });
 
-test('autoreducer ignores irrelevant actions in optional property mode', () => {
-  let state : typeof autoReducers.Bar.actionDataType.id | undefined;
-  const reducer = autoReducers.Bar.makeOptionalPropertyReducer('id');
+test('autoreducer ignores irrelevant actions in actionPropertyShapedStartUndefined mode', () => {
+  let state : TActionDataShape['Bar']['id'] | undefined;
+  const reducer = autoReducers.Bar.actionPropertyShapedStartUndefined('id');
 
   state = reducer(undefined, { type : '' }); // init state with blank action
 
@@ -175,7 +208,7 @@ test('autoreducer ignores irrelevant actions in optional property mode', () => {
 
 test('autoreducer will init false state in toggle mode without default', () => {
   let state : boolean;
-  const reducer = autoReducers.Tog.makeToggleReducer();
+  const reducer = autoReducers.Tog.asToggle();
 
   state = reducer(undefined, { type : '' }); // init state with blank action
 
@@ -184,7 +217,7 @@ test('autoreducer will init false state in toggle mode without default', () => {
 
 test('autoreducer can init to true state in toggle mode with default', () => {
   let state : boolean;
-  const reducer = autoReducers.Tog.makeToggleReducer(true);
+  const reducer = autoReducers.Tog.asToggle(true);
 
   state = reducer(undefined, { type : '' }); // init state with blank action
 
@@ -193,7 +226,7 @@ test('autoreducer can init to true state in toggle mode with default', () => {
 
 test('autoreducer processes relevant actions in toggle mode', () => {
   let state : boolean;
-  const reducer = autoReducers.Tog.makeToggleReducer();
+  const reducer = autoReducers.Tog.asToggle();
 
   state = reducer(undefined, { type : '' }); // init state with blank action
 
@@ -210,7 +243,7 @@ test('autoreducer processes relevant actions in toggle mode', () => {
 
 test('autoreducer ignores irrelevant actions in toggle mode', () => {
   let state : boolean;
-  const reducer = autoReducers.Tog.makeToggleReducer();
+  const reducer = autoReducers.Tog.asToggle();
 
   state = reducer(undefined, { type : '' }); // init state with blank action
 
