@@ -52,34 +52,34 @@ test('autoreducer ignores irrelevant actions in actionShaped mode', () => {
 });
 
 test('autoreducer will init state in actionShapedStartUndefined mode', () => {
-  let state : TActionDataShape['Bar'] | undefined;
-  const reducer = autoReducers.Bar.actionShapedStartUndefined();
+  let state : TActionDataShape['Bar'] | null;
+  const reducer = autoReducers.Bar.actionShapedStartNull();
 
   state = reducer(undefined, { type : '' }); // init state with blank action
 
-  expect(state).toBeUndefined();
+  expect(state).toBeNull();
 });
 
 test('autoreducer processes relevant actions in actionShapedStartUndefined mode', () => {
-  let state : TActionDataShape['Bar'] | undefined;
-  const reducer = autoReducers.Bar.actionShapedStartUndefined();
+  let state : TActionDataShape['Bar'] | null;
+  const reducer = autoReducers.Bar.actionShapedStartNull();
 
   state = reducer(undefined, { type : '' }); // init state with blank action
 
-  expect(state).toBeUndefined();
+  expect(state).toBeNull();
   state = reducer(state, autoCreators.Bar({id : 1213}));
   expect(state).toEqual({ id : 1213 });
 });
 
 test('autoreducer ignores irrelevant actions in actionShapedStartUndefined mode', () => {
-  let state : TActionDataShape['Bar'] | undefined;
-  const reducer = autoReducers.Bar.actionShapedStartUndefined();
+  let state : TActionDataShape['Bar'] | null;
+  const reducer = autoReducers.Bar.actionShapedStartNull();
 
   state = reducer(undefined, { type : '' }); // init state with blank action
 
-  expect(state).toBeUndefined();
+  expect(state).toBeNull();
   state = reducer(state, autoCreators.Foo({id : '1213'}));
-  expect(state).toBeUndefined();
+  expect(state).toBeNull();
 });
 
 test('autoreducer will init state in partialActionShaped mode', () => {
@@ -176,34 +176,34 @@ test('autoreducer ignores irrelevant actions in partialActionPropertyShaped mode
 });
 
 test('autoreducer will init undefined state in actionPropertyShapedStartUndefined mode', () => {
-  let state : TActionDataShape['Bar']['id'] | undefined;
-  const reducer = autoReducers.Bar.actionPropertyShapedStartUndefined('id');
+  let state : TActionDataShape['Bar']['id'] | null;
+  const reducer = autoReducers.Bar.actionPropertyShapedStartNull('id');
 
   state = reducer(undefined, { type : '' }); // init state with blank action
 
-  expect(state).toBeUndefined();
+  expect(state).toBeNull();
 });
 
 test('autoreducer processes relevant actions in actionPropertyShapedStartUndefined mode', () => {
-  let state : TActionDataShape['Bar']['id'] | undefined;
-  const reducer = autoReducers.Bar.actionPropertyShapedStartUndefined('id');
+  let state : TActionDataShape['Bar']['id'] | null;
+  const reducer = autoReducers.Bar.actionPropertyShapedStartNull('id');
 
   state = reducer(undefined, { type : '' }); // init state with blank action
 
-  expect(state).toBeUndefined();
+  expect(state).toBeNull();
   state = reducer(state, autoCreators.Bar({id : 1213}));
   expect(state).toEqual(1213);
 });
 
 test('autoreducer ignores irrelevant actions in actionPropertyShapedStartUndefined mode', () => {
-  let state : TActionDataShape['Bar']['id'] | undefined;
-  const reducer = autoReducers.Bar.actionPropertyShapedStartUndefined('id');
+  let state : TActionDataShape['Bar']['id'] | null;
+  const reducer = autoReducers.Bar.actionPropertyShapedStartNull('id');
 
   state = reducer(undefined, { type : '' }); // init state with blank action
 
-  expect(state).toBeUndefined();
+  expect(state).toBeNull();
   state = reducer(state, autoCreators.Foo({id : '1213'}));
-  expect(state).toBeUndefined();
+  expect(state).toBeNull();
 });
 
 test('autoreducer will init false state in toggle mode without default', () => {
