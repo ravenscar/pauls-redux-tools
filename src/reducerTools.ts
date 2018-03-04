@@ -37,6 +37,7 @@ export const autoReducerFactory = <AT>(actionTypes : AT) => <AD extends { [T in 
 export type TTightReducer<S> = (state : S | undefined, action : Action) => S;
 export type TReducers<S> = { [K in keyof S] : TTightReducer<S[K]> };
 
-// tslint:disable-next-line no-unnecessary-callback-wrapper (it's enforcing type safety)
-export const tightCombineReducers = <State>(reducers : TReducers<State>) => combineReducers<State>(reducers); // not needed if using redux 4+ as TS support improved
+export type TReducerWithUndefined<State> = (state : State | undefined, action : AnyAction) => State;
 
+// need as any as combineReducers signature is wrong
+export const tightCombineReducers = <State>(reducers : TReducers<State>) : TReducerWithUndefined<State> => combineReducers<State>(reducers) as any;
