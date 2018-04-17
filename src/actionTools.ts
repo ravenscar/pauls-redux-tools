@@ -27,3 +27,15 @@ export const autoGuardFactory = <AT>(actionTypes : AT) => <AD extends { [T in ke
 
   return guards;
 };
+
+export const multiTypeFilterFactory = <AT>(actionTypes : AT) => (...types : (keyof AT)[]) => (action : any) : boolean => {
+  if (action && action.type) {
+    for (const at of types) {
+      if (action.type === at) {
+        return true;
+      }
+    }
+  }
+
+  return false;
+};

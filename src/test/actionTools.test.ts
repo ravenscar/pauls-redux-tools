@@ -1,4 +1,4 @@
-import { autoCreatorFactory, autoGuardFactory } from '../actionTools';
+import { autoCreatorFactory, autoGuardFactory, multiTypeFilterFactory } from '../actionTools';
 
 enum ActionTypesStringEnum {
   Foo = 'Foo',
@@ -32,15 +32,19 @@ type TActionDataShape = {
 
 const autoCreatorsStringEnum = autoCreatorFactory(ActionTypesStringEnum)<TActionDataShape>();
 const actionGuardsStringEnum = autoGuardFactory(ActionTypesStringEnum)<TActionDataShape>();
+const multiTypeFilterStringEnum = multiTypeFilterFactory(ActionTypesStringEnum);
 
 const autoCreatorsEnum = autoCreatorFactory(ActionTypesEnum)<TActionDataShape>();
 const actionGuardsEnum = autoGuardFactory(ActionTypesEnum)<TActionDataShape>();
+const multiTypeFilterEnum = multiTypeFilterFactory(ActionTypesEnum);
 
 const autoCreatorsPojo = autoCreatorFactory(actionTypesPojo)<TActionDataShape>();
 const actionGuardsPojo = autoGuardFactory(actionTypesPojo)<TActionDataShape>();
+const multiTypeFilterPojo = multiTypeFilterFactory(actionTypesPojo);
 
 const autoCreatorsClass = autoCreatorFactory(new ActionTypesClass())<TActionDataShape>();
 const actionGuardsClass = autoGuardFactory(new ActionTypesClass())<TActionDataShape>();
+const multiTypeFilterClass = multiTypeFilterFactory(new ActionTypesClass());
 
 type TCreators = typeof autoCreatorsStringEnum & typeof autoCreatorsEnum & typeof autoCreatorsPojo & typeof autoCreatorsClass;
 type TGuards = typeof actionGuardsStringEnum & typeof actionGuardsEnum & typeof actionGuardsPojo & typeof actionGuardsClass;
@@ -105,4 +109,91 @@ test('can override an autoCreator', () => {
   const { Foo } = createSomeActions(actionCreators);
 
   expect(Foo.data).toEqual({ id : 'myPrefix:abc' });
+});
+
+test('multi filter works as expected simple case', () => {
+  expect([
+    { type: 'Bar' },
+  ].filter(multiTypeFilterStringEnum('Foo'))).toEqual([
+  ]);
+
+  expect([
+    { type: 'Foo' },
+  ].filter(multiTypeFilterStringEnum('Foo'))).toEqual([
+    { type: 'Foo' },
+  ]);
+
+  expect([
+    { type: 'Foo' },
+    { type: 'Bar' },
+    { type: 'Baz' },
+  ].filter(multiTypeFilterStringEnum('Foo'))).toEqual([
+    { type: 'Foo' },
+  ]);
+
+  expect([
+    { type: 'Foo' },
+    { type: 'Bar' },
+    { type: 'Baz' },
+    { type: 'Foo' },
+  ].filter(multiTypeFilterStringEnum('Foo'))).toEqual([
+    { type: 'Foo' },
+    { type: 'Foo' },
+  ]);
+
+  expect([
+    { type: 'Foo' },
+    { type: 'Bar' },
+    { type: 'Baz' },
+    { type: 'Foo' },
+  ].filter(multiTypeFilterStringEnum('Foo', 'Bar'))).toEqual([
+    { type: 'Foo' },
+    { type: 'Bar' },
+    { type: 'Foo' },
+  ]);
+
+  expect([
+    { type: 'Foo' },
+    { type: 'Bar' },
+    { type: 'Baz' },
+    { type: 'Foo' },
+  ].filter(multiTypeFilterStringEnum('Foo', 'Bar', 'Bar', 'Bar', 'Baz'))).toEqual([
+    { type: 'Foo' },
+    { type: 'Bar' },
+    { type: 'Baz' },
+    { type: 'Foo' },
+  ]);
+
+  expect([
+    { type: 'Foo' },
+    { type: 'Bar' },
+    { type: 'Baz' },
+    { type: 'Foo' },
+  ].filter(multiTypeFilterEnum('Foo', 'Bar'))).toEqual([
+    { type: 'Foo' },
+    { type: 'Bar' },
+    { type: 'Foo' },
+  ]);
+
+  expect([
+    { type: 'Foo' },
+    { type: 'Bar' },
+    { type: 'Baz' },
+    { type: 'Foo' },
+  ].filter(multiTypeFilterClass('Foo', 'Bar'))).toEqual([
+    { type: 'Foo' },
+    { type: 'Bar' },
+    { type: 'Foo' },
+  ]);
+
+  expect([
+    { type: 'Foo' },
+    { type: 'Bar' },
+    { type: 'Baz' },
+    { type: 'Foo' },
+  ].filter(multiTypeFilterPojo('Foo', 'Bar'))).toEqual([
+    { type: 'Foo' },
+    { type: 'Bar' },
+    { type: 'Foo' },
+  ]);
 });
