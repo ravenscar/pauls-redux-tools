@@ -1,11 +1,11 @@
 // tslint:disable-next-line no-unused-variable (needed for generating declarations until redux 4)
 import { AnyAction } from 'redux';
 import { Action, combineReducers } from 'redux';
-import { autoGuardFactory } from './actionTools';
+import { autoGuardFactory, TActionShapes, TActionTypes } from './actionTools';
 
-export const autoReducerFactory = <AT>(actionTypes : AT) => <AD extends { [T in keyof AT] : AD[T] }>() => {
+export const autoReducerFactory = <S extends TActionShapes>(actionTypes : TActionTypes<S>) => <AD extends { [T in keyof S] : AD[T] }>() => {
   const guards = autoGuardFactory(actionTypes)<AD>();
-  const reducers = {} as { [T in keyof AT] : {
+  const reducers = {} as { [T in keyof S] : {
     actionShaped : (defaultState : AD[T]) => (state : AD[T] | undefined, action : Action) => AD[T],
     actionShapedStartNull : () => (state : AD[T] | undefined | null, action : Action) => AD[T] | null,
     partialActionShaped : (defaultState : Partial<AD[T]>) => (state : Partial<AD[T]> | undefined, action : Action) => Partial<AD[T]>,

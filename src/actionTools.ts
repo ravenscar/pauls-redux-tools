@@ -8,8 +8,25 @@ export type TAction<T extends (string | number | symbol), D extends { } = { }> =
 
 export type TGenericThunk<RS> = (dispatch : Dispatch<RS>, getState : () => RS) => void;
 
-export const autoCreatorFactory = <AT>(actionTypes : AT) => <AD extends { [T in keyof AT] : AD[T] }>() => {
-  const creators = {} as { [T in keyof AT] : (data : AD[T]) => TAction<T, AD[T]> };
+export type TActionShapes = {
+  [ K : string ] : { }
+};
+
+export type TAllActionsMap<S extends TActionShapes> = {
+  [P in keyof S] : TAction<P, S[P]>;
+};
+
+export type SubActionsMap<S extends TActionShapes, T extends keyof S> = Pick<TAllActionsMap<S>, T>;
+
+export type PickActions<S extends TActionShapes, T extends keyof S> = SubActionsMap<S, T>[keyof SubActionsMap<S, T>];
+
+// used so we can use concrete pojo/enum/object as the action types seed.
+export type TActionTypes<X extends TActionShapes> = {
+  [ K in keyof X ] : any
+};
+
+export const autoCreatorFactory = <S extends TActionShapes>(actionTypes : TActionTypes<S>) => <AD extends { [T in keyof S] : AD[T] }>() => {
+  const creators = {} as { [T in keyof S] : (data : AD[T]) => TAction<T, AD[T]> };
 
   for (const type in actionTypes) {
     creators[type] = (data) => ({ type, data });
@@ -18,8 +35,8 @@ export const autoCreatorFactory = <AT>(actionTypes : AT) => <AD extends { [T in 
   return creators;
 };
 
-export const autoGuardFactory = <AT>(actionTypes : AT) => <AD extends { [T in keyof AT] : AD[T] }>() => {
-  const guards = {} as { [T in keyof AT] : (action : Action) => action is TAction<T, AD[T]> };
+export const autoGuardFactory = <S extends TActionShapes>(actionTypes : TActionTypes<S>) => <AD extends { [T in keyof S] : AD[T] }>() => {
+  const guards = {} as { [T in keyof S] : (action : Action) => action is TAction<T, AD[T]> };
 
 
   // Extract<keyof AT, string>
@@ -30,7 +47,7 @@ export const autoGuardFactory = <AT>(actionTypes : AT) => <AD extends { [T in ke
   return guards;
 };
 
-export const multiTypeFilterFactory = <AT>(actionTypes : AT) => (...types : (keyof AT)[]) => (action : any) : boolean => {
+export const multiTypeFilterFactory = <S extends TActionShapes>(actionTypes : TActionTypes<S>) => (...types : (keyof S)[]) => (action : any) : action is PickActions<S, typeof actionTypes> => {
   if (action && action.type) {
     for (const at of types) {
       if (action.type === at) {
