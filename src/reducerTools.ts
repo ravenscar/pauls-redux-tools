@@ -3,15 +3,15 @@ import { AnyAction } from 'redux';
 import { Action, combineReducers } from 'redux';
 import { autoGuardFactory, TActionShapes, TActionTypes } from './actionTools';
 
-export const autoReducerFactory = <S extends TActionShapes>(actionTypes : TActionTypes<S>) => <AD extends { [T in keyof S] : AD[T] }>() => {
-  const guards = autoGuardFactory(actionTypes)<AD>();
+export const autoReducerFactory = <S extends TActionShapes>(actionTypes : TActionTypes<S>) => {
+  const guards = autoGuardFactory<S>(actionTypes);
   const reducers = {} as { [T in keyof S] : {
-    actionShaped : (defaultState : AD[T]) => (state : AD[T] | undefined, action : Action) => AD[T],
-    actionShapedStartNull : () => (state : AD[T] | undefined | null, action : Action) => AD[T] | null,
-    partialActionShaped : (defaultState : Partial<AD[T]>) => (state : Partial<AD[T]> | undefined, action : Action) => Partial<AD[T]>,
-    actionPropertyShaped : <P extends keyof AD[T]>(property : P, defaultState : AD[T][P]) => (state : AD[T][P] | undefined, action : Action) => AD[T][P],
-    actionPropertyShapedStartNull : <P extends keyof AD[T]>(property : P) => (state : AD[T][P] | undefined | null, action : Action) => AD[T][P] | null,
-    partialActionPropertyShaped : <P extends keyof AD[T]>(property : P, defaultState : Partial<AD[T][P]>) => (state : Partial<AD[T][P]> | undefined, action : Action) => Partial<AD[T][P]>,
+    actionShaped : (defaultState : S[T]) => (state : S[T] | undefined, action : Action) => S[T],
+    actionShapedStartNull : () => (state : S[T] | undefined | null, action : Action) => S[T] | null,
+    partialActionShaped : (defaultState : Partial<S[T]>) => (state : Partial<S[T]> | undefined, action : Action) => Partial<S[T]>,
+    actionPropertyShaped : <P extends keyof S[T]>(property : P, defaultState : S[T][P]) => (state : S[T][P] | undefined, action : Action) => S[T][P],
+    actionPropertyShapedStartNull : <P extends keyof S[T]>(property : P) => (state : S[T][P] | undefined | null, action : Action) => S[T][P] | null,
+    partialActionPropertyShaped : <P extends keyof S[T]>(property : P, defaultState : Partial<S[T][P]>) => (state : Partial<S[T][P]> | undefined, action : Action) => Partial<S[T][P]>,
     asToggle : (defaultState? : boolean ) => (state : boolean | undefined, action : Action) => boolean,
   } };
 

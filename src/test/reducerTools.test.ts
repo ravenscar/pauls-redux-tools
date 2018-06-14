@@ -17,8 +17,8 @@ type TActionDataShape = {
   Sub : { Prop : { id : string, count : number }}
 };
 
-const autoCreators = autoCreatorFactory(ActionTypes)<TActionDataShape>();
-const autoReducers = autoReducerFactory(ActionTypes)<TActionDataShape>();
+const autoCreators = autoCreatorFactory<TActionDataShape>(ActionTypes);
+const autoReducers = autoReducerFactory<TActionDataShape>(ActionTypes);
 
 test('autoreducer will init state in actionShaped mode', () => {
   let state : TActionDataShape['Bar'];

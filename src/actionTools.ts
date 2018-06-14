@@ -25,8 +25,8 @@ export type TActionTypes<X extends TActionShapes> = {
   [ K in keyof X ] : any
 };
 
-export const autoCreatorFactory = <S extends TActionShapes>(actionTypes : TActionTypes<S>) => <AD extends { [T in keyof S] : AD[T] }>() => {
-  const creators = {} as { [T in keyof S] : (data : AD[T]) => TAction<T, AD[T]> };
+export const autoCreatorFactory = <S extends TActionShapes = never>(actionTypes : TActionTypes<S>) => {
+  const creators = {} as { [T in keyof S] : (data : S[T]) => TAction<T, S[T]> };
 
   for (const type in actionTypes) {
     creators[type] = (data) => ({ type, data });
@@ -35,19 +35,19 @@ export const autoCreatorFactory = <S extends TActionShapes>(actionTypes : TActio
   return creators;
 };
 
-export const autoGuardFactory = <S extends TActionShapes>(actionTypes : TActionTypes<S>) => <AD extends { [T in keyof S] : AD[T] }>() => {
-  const guards = {} as { [T in keyof S] : (action : Action) => action is TAction<T, AD[T]> };
+export const autoGuardFactory = <S extends TActionShapes = never>(actionTypes : TActionTypes<S>) => {
+  const guards = {} as { [T in keyof S] : (action : Action) => action is TAction<T, S[T]> };
 
 
   // Extract<keyof AT, string>
   for (const type in actionTypes) {
-    guards[type] = (action) : action is TAction<typeof type, AD[typeof type]> => action.type === type;
+    guards[type] = (action) : action is TAction<typeof type, S[typeof type]> => action.type === type;
   }
 
   return guards;
 };
 
-export const multiTypeFilterFactory = <S extends TActionShapes>() => <K extends keyof S>(...wantedTypes : K[]) => (action : TAllActionsMap<TActionShapes>[keyof TAllActionsMap<TActionShapes>] | Action) : action is PickActions<S, K> => {
+export const multiTypeFilterFactory = <S extends TActionShapes = never>() => <K extends keyof S>(...wantedTypes : K[]) => (action : TAllActionsMap<TActionShapes>[keyof TAllActionsMap<TActionShapes>] | Action) : action is PickActions<S, K> => {
   if (action && action.type) {
     for (const at of wantedTypes) {
       if (action.type === at) {

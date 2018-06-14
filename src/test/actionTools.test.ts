@@ -30,21 +30,21 @@ type TActionDataShape = {
   Baz : { first : boolean, second : number, third : string };
 };
 
-const autoCreatorsStringEnum = autoCreatorFactory(ActionTypesStringEnum)<TActionDataShape>();
-const actionGuardsStringEnum = autoGuardFactory(ActionTypesStringEnum)<TActionDataShape>();
+const autoCreatorsStringEnum = autoCreatorFactory<TActionDataShape>(ActionTypesStringEnum);
+const actionGuardsStringEnum = autoGuardFactory<TActionDataShape>(ActionTypesStringEnum);
 const multiTypeFilterStringEnum = multiTypeFilterFactory<TActionDataShape>();
 
-const autoCreatorsEnum = autoCreatorFactory(ActionTypesEnum)<TActionDataShape>();
-const actionGuardsEnum = autoGuardFactory(ActionTypesEnum)<TActionDataShape>();
+const autoCreatorsEnum = autoCreatorFactory<TActionDataShape>(ActionTypesEnum);
+const actionGuardsEnum = autoGuardFactory<TActionDataShape>(ActionTypesEnum);
 const multiTypeFilterEnum = multiTypeFilterFactory<TActionDataShape>();
 
-const autoCreatorsPojo = autoCreatorFactory(actionTypesPojo)<TActionDataShape>();
-const actionGuardsPojo = autoGuardFactory(actionTypesPojo)<TActionDataShape>();
+const autoCreatorsPojo = autoCreatorFactory<TActionDataShape>(actionTypesPojo);
+const actionGuardsPojo = autoGuardFactory<TActionDataShape>(actionTypesPojo);
 const multiTypeFilterPojo = multiTypeFilterFactory<TActionDataShape>();
 
-const autoCreatorsClass = autoCreatorFactory(new ActionTypesClass())<TActionDataShape>();
-const actionGuardsClass = autoGuardFactory(new ActionTypesClass())<TActionDataShape>();
-const multiTypeFilterClass = multiTypeFilterFactory();
+const autoCreatorsClass = autoCreatorFactory<TActionDataShape>(new ActionTypesClass());
+const actionGuardsClass = autoGuardFactory<TActionDataShape>(new ActionTypesClass());
+const multiTypeFilterClass = multiTypeFilterFactory<TActionDataShape>();
 
 type TCreators = typeof autoCreatorsStringEnum & typeof autoCreatorsEnum & typeof autoCreatorsPojo & typeof autoCreatorsClass;
 type TGuards = typeof actionGuardsStringEnum & typeof actionGuardsEnum & typeof actionGuardsPojo & typeof actionGuardsClass;
