@@ -32,19 +32,19 @@ type TActionDataShape = {
 
 const autoCreatorsStringEnum = autoCreatorFactory(ActionTypesStringEnum)<TActionDataShape>();
 const actionGuardsStringEnum = autoGuardFactory(ActionTypesStringEnum)<TActionDataShape>();
-const multiTypeFilterStringEnum = multiTypeFilterFactory(ActionTypesStringEnum);
+const multiTypeFilterStringEnum = multiTypeFilterFactory<TActionDataShape>();
 
 const autoCreatorsEnum = autoCreatorFactory(ActionTypesEnum)<TActionDataShape>();
 const actionGuardsEnum = autoGuardFactory(ActionTypesEnum)<TActionDataShape>();
-const multiTypeFilterEnum = multiTypeFilterFactory(ActionTypesEnum);
+const multiTypeFilterEnum = multiTypeFilterFactory<TActionDataShape>();
 
 const autoCreatorsPojo = autoCreatorFactory(actionTypesPojo)<TActionDataShape>();
 const actionGuardsPojo = autoGuardFactory(actionTypesPojo)<TActionDataShape>();
-const multiTypeFilterPojo = multiTypeFilterFactory(actionTypesPojo);
+const multiTypeFilterPojo = multiTypeFilterFactory<TActionDataShape>();
 
 const autoCreatorsClass = autoCreatorFactory(new ActionTypesClass())<TActionDataShape>();
 const actionGuardsClass = autoGuardFactory(new ActionTypesClass())<TActionDataShape>();
-const multiTypeFilterClass = multiTypeFilterFactory(new ActionTypesClass());
+const multiTypeFilterClass = multiTypeFilterFactory();
 
 type TCreators = typeof autoCreatorsStringEnum & typeof autoCreatorsEnum & typeof autoCreatorsPojo & typeof autoCreatorsClass;
 type TGuards = typeof actionGuardsStringEnum & typeof actionGuardsEnum & typeof actionGuardsPojo & typeof actionGuardsClass;

@@ -47,9 +47,9 @@ export const autoGuardFactory = <S extends TActionShapes>(actionTypes : TActionT
   return guards;
 };
 
-export const multiTypeFilterFactory = <S extends TActionShapes>(actionTypes : TActionTypes<S>) => (...types : (keyof S)[]) => (action : any) : action is PickActions<S, typeof actionTypes> => {
+export const multiTypeFilterFactory = <S extends TActionShapes>() => <K extends keyof S>(...wantedTypes : K[]) => (action : TAllActionsMap<TActionShapes>[keyof TAllActionsMap<TActionShapes>] | Action) : action is PickActions<S, K> => {
   if (action && action.type) {
-    for (const at of types) {
+    for (const at of wantedTypes) {
       if (action.type === at) {
         return true;
       }
