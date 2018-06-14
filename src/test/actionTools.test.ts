@@ -101,10 +101,10 @@ test('Action guards work as expected', () => {
 
 test('can override an autoCreator', () => {
   const overrides = {
-    Foo : (data : TActionDataShape['Foo']) => ({ type : 'Foo', data : { id : `myPrefix:${data.id}`} })
+    Foo : (data : TActionDataShape['Foo']) => ({ type : 'Foo' as 'Foo', data : { id : `myPrefix:${data.id}`} })
   };
 
-  const actionCreators = { ...autoCreatorsEnum, ...overrides };
+  const actionCreators = { ...autoCreatorsPojo, ...overrides };
 
   const { Foo } = createSomeActions(actionCreators);
 
