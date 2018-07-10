@@ -41,3 +41,6 @@ export type TReducerWithUndefined<State> = (state : State | undefined, action : 
 
 // need as any as combineReducers signature is wrong
 export const tightCombineReducers = <State>(reducers : TReducers<State>) : TReducerWithUndefined<State> => combineReducers<State>(reducers) as any;
+
+// generic type for deriving a typing from a map of reducers
+export type TReducerMapType<C extends { [k : string] : (...args : any[]) => any }> = { [k in keyof C]: ReturnType<C[k]> };
