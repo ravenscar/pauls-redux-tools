@@ -34,13 +34,5 @@ export const autoReducerFactory = <S extends TActionShapes>(actionTypes : TActio
   return reducers;
 };
 
-export type TTightReducer<S> = (state : S | undefined, action : Action) => S;
-export type TReducers<S> = { [K in keyof S] : TTightReducer<S[K]> };
-
-export type TReducerWithUndefined<State> = (state : State | undefined, action : AnyAction) => State;
-
-// need as any as combineReducers signature is wrong
-export const tightCombineReducers = <State>(reducers : TReducers<State>) : TReducerWithUndefined<State> => combineReducers<State>(reducers) as any;
-
 // generic type for deriving a typing from a map of reducers
 export type TReducerMapType<C extends { [k : string] : (...args : any[]) => any }> = { [k in keyof C]: ReturnType<C[k]> };
