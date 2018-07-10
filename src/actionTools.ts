@@ -8,9 +8,7 @@ export type TAction<T extends (string | number | symbol), D extends { } = { }> =
 
 export type TGenericThunk<RS> = (dispatch : Dispatch<RS>, getState : () => RS) => void;
 
-export type TActionShapes = {
-  [ K : string ] : { }
-};
+export type TActionShapes = Record<string, {}>;
 
 export type TAllActionsMap<S extends TActionShapes> = {
   [P in keyof S] : TAction<P, S[P]>;
@@ -21,9 +19,7 @@ export type SubActionsMap<S extends TActionShapes, T extends keyof S> = Pick<TAl
 export type PickActions<S extends TActionShapes, T extends keyof S> = SubActionsMap<S, T>[keyof SubActionsMap<S, T>];
 
 // used so we can use concrete pojo/enum/object as the action types seed.
-export type TActionTypes<X extends TActionShapes> = {
-  [ K in keyof X ] : any
-};
+export type TActionTypes<X extends TActionShapes> = Record<keyof X, any>;
 
 export const autoCreatorFactory = <S extends TActionShapes = never>(actionTypes : TActionTypes<S>) => {
   const creators = {} as { [T in keyof S] : (data : S[T]) => TAction<T, S[T]> };
