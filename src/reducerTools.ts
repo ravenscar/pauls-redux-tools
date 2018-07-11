@@ -1,6 +1,5 @@
 // tslint:disable-next-line no-unused-variable (needed for generating declarations until redux 4)
-import { AnyAction } from 'redux';
-import { Action, combineReducers } from 'redux';
+import { Action } from 'redux';
 import { autoGuardFactory, TActionShapes, TActionTypes } from './actionTools';
 
 export const autoReducerFactory = <S extends TActionShapes>(actionTypes : TActionTypes<S>) => {
