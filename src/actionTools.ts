@@ -6,7 +6,7 @@ export type TAction<T extends (string | number | symbol), D extends { } = { }> =
   data : D,
 };
 
-export type TGenericThunk<RS> = (dispatch : Dispatch<RS>, getState : () => RS) => void;
+export type TGenericThunk<RS> = (dispatch : Dispatch, getState : () => RS) => void;
 
 export type TActionShapes = Record<string, {}>;
 
