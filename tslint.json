@@ -21,7 +21,6 @@
     "no-invalid-template-strings": true,
     "no-string-throw": true,
     "no-unused-expression": true,
-    "no-unused-variable": true,
     "one-line": [true,
       "check-open-brace",
       "check-whitespace"

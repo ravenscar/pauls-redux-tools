@@ -1,6 +1,6 @@
 {
   "name": "pauls-redux-tools",
-  "version": "1.0.1",
+  "version": "2.0.0",
   "description": "Pauls Redux Tools",
   "keywords": [
     "redux",
@@ -17,12 +17,12 @@
     "redux": "^4.x"
   },
   "devDependencies": {
-    "@types/jest": "^22.1.1",
-    "jest": "^22.1.4",
-    "redux": "^4.0.0",
-    "ts-jest": "^22.0.3",
-    "tslint": "^5.7.0",
-    "typescript": "^2.9.2"
+    "@types/jest": "^24.0.15",
+    "jest": "^24.8.0",
+    "redux": "^4.0.4",
+    "ts-jest": "^24.0.2",
+    "tslint": "^5.18.0",
+    "typescript": "^3.5.3"
   },
   "scripts": {
     "lint": "tslint -c tslint.json --project tsconfig.json 'src/**/*.ts' 'src/**/*.tsx'",
